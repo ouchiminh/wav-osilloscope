@@ -43,8 +43,11 @@ int main(int argc, char * argv[]) {
 		window.draw(fps);
 		wv.offset_ += 1;
 		window.display();
-		if (wv.offset_ == 30000) 
+		if (wv.offset_ == 30000) {
 			wv.offset_ = 80000;
+		}
+		if (wv.offset_ == 100000)
+			wv.frg_ = sf::Color::Red;
 	}
 
 	return 0;

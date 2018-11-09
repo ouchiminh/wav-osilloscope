@@ -37,12 +37,16 @@ class auto_convert {
 	T val_;
 public:
 	auto_convert(T && val, Converters &&...converters) :
-		converters_{ std::forward<Converters>(converters)... },
-		val_(std::forward<T>(val))
+		converters_{ std::move(converters)... },
+		val_(std::move(val))
 	{}
 	auto_convert(T const & val, Converters &&...converters) :
-		converters_{ std::forward<Converters>(converters)... },
+		converters_{ std::move(converters)... },
 		val_(val)
+	{}
+	auto_convert(Converters &&...converters) :
+		converters_{ std::move(converters)... }
+		val_(T{})
 	{}
 
 	template<class U>
@@ -63,7 +67,7 @@ public:
 	auto_convert & operator=(U&& val) {
 		auto convert = [&val, this](auto & converter) {
 			if constexpr (std::is_invocable_r_v<T, decltype(converter), U>)
-				val_ = converter(std::forward<U>(val));
+				val_ = converter(std::move(val));
 			else if constexpr (std::is_convertible_v<T, U>)
 				val_ =  static_cast<T>(val);
 			else

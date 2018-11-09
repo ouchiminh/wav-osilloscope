@@ -54,11 +54,19 @@ public:
 		last_offset_ = offset_;
 	}
 
-	property<sf::Color> bkg_ {sf::Color::Black};
-	property<sf::Color> frg_ {sf::Color::Green};
+	property<sf::Color> frg_ {
+		[](sf::Color const & v) {
+			return v;
+		},
+		[&](sf::Color const & v) {
+			va_.clear();
+			return v;
+		},
+		sf::Color::Green
+	};
 	long long offset_ = 0;
 	property<double> zoom_ {
-		[](double v) {return v; },
+		[](double v) { return v; },
 		[&](double v) {
 			va_.clear();
 			return v;

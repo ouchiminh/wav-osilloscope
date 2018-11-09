@@ -19,13 +19,20 @@ public:
 		return val_;
 	}
 	ValueType operator= (ValueType && v) noexcept {
-		val_ = setter_(v);
+		val_ = setter_(std::move(v));
 		return val_;
 	}
 	property(Getter && getter, Setter && setter, ValueType && val = ValueType{}) :
-		getter_(std::forward<Getter>(getter)),
-		setter_(std::forward<Setter>(setter)),
-		val_{ std::forward<ValueType>(val) }
+		getter_(std::move(getter)),
+		setter_(std::move(setter)),
+		val_{ std::move(val) }
+	{
+		if (!getter_ || !setter_) throw std::exception("no accessor was set!");
+	}
+	property(Getter && getter, Setter && setter, ValueType const & val = ValueType{}) :
+		getter_(std::move(getter)),
+		setter_(std::move(setter)),
+		val_{ val }
 	{
 		if (!getter_ || !setter_) throw std::exception("no accessor was set!");
 	}
