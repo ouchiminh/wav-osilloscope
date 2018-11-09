@@ -3,7 +3,6 @@
 #include <istream>
 #include <iterator>
 #include <algorithm>
-#include <filesystem>
 #include <string>
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
