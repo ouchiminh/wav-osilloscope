@@ -43,8 +43,8 @@ int main(int argc, char * argv[]) {
 		window.draw(fps);
 		wv.offset_ += 1;
 		window.display();
-		if (wv.offset_ > 30000) 
-			wv.offset_ = 0;
+		if (wv.offset_ == 30000) 
+			wv.offset_ = 80000;
 	}
 
 	return 0;

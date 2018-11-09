@@ -44,7 +44,7 @@ public:
 		itr = (d >= 0) ? va_.erase(itr, itr + o) :
 			va_.erase(itr + o, itr);
 
-		for (auto i = (d >= 0) ? std::max(0ll, last_offset_) + va_.size() : std::max(0ll, offset_);
+		for (auto i = (d >= 0) ? std::max(0ll, offset_) + va_.size() : std::max(0ll, offset_);
 			 i != (d >= 0 ? std::min<long long>(offset_ + disp_sample_width, sb_.getSampleCount()) : std::min<long long>({ last_offset_, (long long)sb_.getSampleCount(), disp_sample_width}));
 			 i++) {
 			auto p = (float)rt.getSize().y * sb_.getSamples()[i] / (float)sample_range + rt.getSize().y / 2;
