@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <filesystem>
 #include <string>
-#include <deque>
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
 #include "property.hpp"
@@ -31,9 +30,7 @@ public:
 
 	void update(sf::RenderTarget const & rt) {
 		int disp_sample_width = static_cast<int>(rt.getSize().x / (double)zoom_);
-		int sample_gap = static_cast<int>(1.0f / (double)zoom_);
 		constexpr double sample_range = (SHRT_MAX - SHRT_MIN);
-		std::vector<sf::Vertex> va;
 
 		// cnt = offset - last_offset
 		// delete cnt from front
