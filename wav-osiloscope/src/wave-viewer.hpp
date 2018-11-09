@@ -38,13 +38,22 @@ public:
 		// cnt = offset - last_offset
 		// delete cnt from front
 		// (last_offset + size) <= r <= (offset + width)
-		va_.erase(va_.cbegin(), va_.cbegin() + std::min<long long>(offset_ - last_offset_, va_.size()));
+		const auto d = offset_ - last_offset_;
+		auto itr = (d >= 0 ? va_.cbegin() : va_.cend());
+		auto o = (d >= 0 ? 1 : -1) * std::min<long long>(std::abs(d), va_.size());
+		itr = (d >= 0) ? va_.erase(itr, itr + o) :
+			va_.erase(itr + o, itr);
 
-		for (auto i = std::max(0ll, last_offset_) + va_.size();
-			 i < std::min<long long>(offset_ + disp_sample_width, sb_.getSampleCount());
+		for (auto i = (d >= 0) ? std::max(0ll, last_offset_) + va_.size() : std::max(0ll, offset_);
+			 i != (d >= 0 ? std::min<long long>(offset_ + disp_sample_width, sb_.getSampleCount()) : std::min<long long>({ last_offset_, (long long)sb_.getSampleCount(), disp_sample_width}));
 			 i++) {
 			auto p = (float)rt.getSize().y * sb_.getSamples()[i] / (float)sample_range + rt.getSize().y / 2;
-			va_.push_back(sf::Vertex{ sf::Vector2f{i*(float)(double)zoom_, p}, (sf::Color)frg_ });
+			sf::Vertex v{ sf::Vector2f{i*(float)(double)zoom_, p}, (sf::Color)frg_ };
+			if (d >= 0) va_.push_back(v);
+			else {
+				itr = va_.insert(itr, v);
+				itr++;
+			}
 		}
 		last_offset_ = offset_;
 	}
