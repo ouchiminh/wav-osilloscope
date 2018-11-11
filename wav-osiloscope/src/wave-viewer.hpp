@@ -6,8 +6,7 @@
 #include <string>
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
-#include "property.hpp"
-#include "convertable.hpp"
+#include "ouchilib/utl/property.hpp"
 
 namespace ouchi {
 class wave_viewer : sf::Drawable {
@@ -21,6 +20,8 @@ public:
 	wave_viewer(std::string const & file_path) {
 		sb_.loadFromFile(file_path); 
 	}
+
+	void clear() { va_.clear(); }
 	
 	void draw(sf::RenderTarget & rt, sf::RenderStates rs = sf::RenderStates::Default) const override {
 		rs.transform *= sf::Transform{ 1.f,0.f,-offset_ * (float)(double)zoom_,0.f,1.f,0.f,0.f,0.f,1.f };
@@ -41,7 +42,7 @@ public:
 			va_.erase(itr + o, itr);
 
 		for (auto i = (d >= 0) ? std::max(0ll, offset_) + va_.size() : std::max(0ll, offset_);
-			 i != (d >= 0 ? std::min<long long>(offset_ + disp_sample_width, sb_.getSampleCount()) : std::min<long long>({ last_offset_, (long long)sb_.getSampleCount(), disp_sample_width}));
+			 i < (d >= 0 ? std::min<long long>(offset_ + disp_sample_width, sb_.getSampleCount()) : std::min<long long>({ last_offset_, (long long)sb_.getSampleCount(), disp_sample_width}));
 			 i++) {
 			auto p = (float)rt.getSize().y * sb_.getSamples()[i] / (float)sample_range + rt.getSize().y / 2;
 			sf::Vertex v{ sf::Vector2f{i*(float)(double)zoom_, p}, (sf::Color)frg_ };

@@ -6,35 +6,47 @@
 #endif
 #include <string>
 #include <iostream>
+#include <chrono>
 #include "SFML/window.hpp"
 #include "SFML/Graphics.hpp"
 
 #include "wave-viewer.hpp"
-#include "fps-counter.hpp"
+#include "ouchilib/utl/fps-counter.hpp"
+#include "ouchilib/utl/time_keeper.hpp"
 
 int main(int argc, char * argv[]) {
-	sf::RenderWindow window(sf::VideoMode(1200, 200), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(1200, 500), "SFML works!", sf::Style::Resize | sf::Style::Close);
 	sf::Text fps;
 	sf::Font font;
-	jk::fps_counter<> cnter;
-	ouchi::wave_viewer wv("sample.wav");
+	ouchi::fps_counter<> cnter;
+	ouchi::wave_viewer wv(argv[1]);
+	ouchi::time_keeper<> tk(std::chrono::seconds(1));
 	font.loadFromFile("meiryo.ttc");
 	fps.setFont(font);
 	fps.setFillColor((sf::Color)wv.frg_);
 	fps.setPosition(10, 10);
 
+
 	while (window.isOpen())
 	{
-		cnter.on_frame();
-		if (cnter.get_count() % 1000 == 0) {
-			fps.setString(std::to_string((int)cnter.get_framerate()));
+		if (tk.is_time()) {
+			fps.setString(std::to_string(cnter.get_framerate()));
 			cnter.reset();
+			tk.start();
 		}
+		cnter.on_frame();
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
+			else if (event.type == sf::Event::Resized) {
+				sf::View v;
+				v.setSize(event.size.width, event.size.height);
+				v.setCenter(v.getSize() / 2.f);
+				window.setView(v);
+				wv.clear();
+			}
 		}
 
 		window.clear();
@@ -43,11 +55,6 @@ int main(int argc, char * argv[]) {
 		window.draw(fps);
 		wv.offset_ += 1;
 		window.display();
-		if (wv.offset_ == 30000) {
-			wv.offset_ = 80000;
-		}
-		if (wv.offset_ == 100000)
-			wv.frg_ = sf::Color::Red;
 	}
 
 	return 0;

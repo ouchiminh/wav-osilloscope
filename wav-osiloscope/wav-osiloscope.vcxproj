@@ -108,6 +108,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>D:\Library\SFML-2.5.0\include;D:\Library\boost-1_68_0\include\boost-1_68;D:\Library\ouchilib\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,7 +144,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>D:\Library\SFML-2.5.0\include\SFML;D:\Library\boost-1_68_0\include\boost-1_68;D:\Library\mine\log\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Library\SFML-2.5.0\include;D:\Library\boost-1_68_0\include\boost-1_68;D:\Library\ouchilib\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,13 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\convertable.hpp" />
-    <ClInclude Include="src\fps-counter.hpp" />
-    <ClInclude Include="src\log\format.hpp" />
-    <ClInclude Include="src\log\out.hpp" />
-    <ClInclude Include="src\log\rule.hpp" />
     <ClInclude Include="src\meta.hpp" />
-    <ClInclude Include="src\property.hpp" />
     <ClInclude Include="src\wave-viewer.hpp" />
   </ItemGroup>
   <ItemGroup>
